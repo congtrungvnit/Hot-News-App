@@ -158,7 +158,7 @@ public class HttpResponse {
         }
 
         // No encoding specified
-        return HTTP.DEFAULT_CONTENT_CHARSET;
+        return HTTP.UTF_8;
     }
 
     /**
