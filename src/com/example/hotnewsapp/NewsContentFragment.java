@@ -33,7 +33,6 @@ public class NewsContentFragment extends ListFragment {
 		DATA = new ArrayList<HashMap<String, String>>();
 		handler = new MyHandler(getActivity());
 		newsLink = getArguments().getString("url");
-		new DownloadNewsContent().start();
 
 	}
 
@@ -47,6 +46,7 @@ public class NewsContentFragment extends ListFragment {
 		title.setText(getArguments().getString("title"));
 		date.setText(getArguments().getString("date"));
 		listView = (ListView) rootView.findViewById(android.R.id.list);
+		new DownloadNewsContent().start();
 		return rootView;
 	}
 
@@ -95,6 +95,7 @@ public class NewsContentFragment extends ListFragment {
 					text = text.replace("<strong>", "");
 					text = text.replace("</strong>", "");
 					text = text.replace("  ", " ");
+					
 					text = text.substring(0, text.indexOf("/div"));
 					while (checkLocation(text, "src=") > 0
 							|| checkLocation(text, "<p") > 0) {
@@ -108,19 +109,18 @@ public class NewsContentFragment extends ListFragment {
 						} else if ((checkLocation(text, "src=") > checkLocation(
 								text, "<p")) && checkLocation(text, "<p") > 0) {
 							text = text.substring(text.indexOf("<p") + 5);
-
+							String str = text.substring(text.indexOf(">") + 1,
+									text.indexOf("</p>"));
+							Log.e("str", str);
 							dataItem.put("type", "text");
-							dataItem.put(
-									"value",
-									text.substring(text.indexOf(">") + 1,
-											text.indexOf("</p>")));
+							dataItem.put("value", str);
 						} else if (checkLocation(text, "src=") < 0) {
 							text = text.substring(text.indexOf("<p") + 5);
+							String str = text.substring(text.indexOf(">") + 1,
+									text.indexOf("</p>"));
+							Log.e("str", str);
 							dataItem.put("type", "text");
-							dataItem.put(
-									"value",
-									text.substring(text.indexOf(">") + 1,
-											text.indexOf("</p>")));
+							dataItem.put("value", str);
 						} else {
 							text = text.substring(text.indexOf("src=\"") + 5);
 							dataItem.put("type", "img");

@@ -1,30 +1,27 @@
 package com.example.hotnewsapp.adapter;
 
+import java.net.MalformedURLException;
+import java.net.URL;
 import java.util.ArrayList;
 import java.util.HashMap;
 import com.example.hotnewsapp.R;
-import com.example.hotnewsapp.file.ImageLoader;
-
 import android.content.Context;
-import android.graphics.BitmapFactory;
+import android.graphics.drawable.Drawable;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.BaseAdapter;
-import android.widget.ImageView;
 import android.widget.TextView;
 
 public class NewsContentAdapter extends BaseAdapter {
 	private LayoutInflater mInflater;
 	private ArrayList<HashMap<String, String>> DATA;
-	private ImageLoader loader;
+	private Drawable drawable;
 
 	public NewsContentAdapter(Context context,
 			ArrayList<HashMap<String, String>> DATA) {
 		mInflater = LayoutInflater.from(context);
-		BitmapFactory.decodeResource(context.getResources(),
-				R.drawable.ic_launcher);
-		loader = new ImageLoader(context);
+		drawable = context.getResources().getDrawable(R.drawable.ic_launcher);
 		this.DATA = DATA;
 	}
 
@@ -47,7 +44,7 @@ public class NewsContentAdapter extends BaseAdapter {
 			holder = new ViewHolder();
 			holder.newsContent = (TextView) convertView
 					.findViewById(R.id.news_content);
-			holder.newsImage = (ImageView) convertView
+			holder.newsImage = (com.example.hotnewsapp.imageutil.PhotoView) convertView
 					.findViewById(R.id.news_image);
 			convertView.setTag(holder);
 		} else {
@@ -63,8 +60,13 @@ public class NewsContentAdapter extends BaseAdapter {
 			holder.newsContent.setVisibility(View.GONE);
 			if (!DATA.get(position).get("value").equals("")) {
 				holder.newsImage.setVisibility(View.VISIBLE);
-				loader.DisplayImage(DATA.get(position).get("value"),
-						holder.newsImage);
+				try {
+					URL localURL = new URL(DATA.get(position).get("value"));
+					holder.newsImage.setImageURL(localURL, true, drawable);
+				} catch (MalformedURLException e) {
+					// TODO Auto-generated catch block
+					e.printStackTrace();
+				}
 			} else {
 				holder.newsImage.setVisibility(View.GONE);
 			}
@@ -74,6 +76,6 @@ public class NewsContentAdapter extends BaseAdapter {
 
 	static class ViewHolder {
 		TextView newsContent;
-		ImageView newsImage;
+		com.example.hotnewsapp.imageutil.PhotoView newsImage;
 	}
 }

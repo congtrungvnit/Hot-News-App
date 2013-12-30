@@ -122,7 +122,8 @@ public class ListNewsFragment extends ListFragment {
 				if (response.getStatusCode() == HttpURLConnection.HTTP_OK) {
 					JSONObject jsonObject = new JSONObject(
 							response.getResponseString());
-					int addCount = newsItemDAO.addNewsToLocalDB(jsonObject);
+					int addCount = newsItemDAO.addNewsToLocalDB(jsonObject)
+							.size();
 					if (handler != null && addCount > 0) {
 						Message msgObj = handler.obtainMessage();
 						msgObj.what = UPDATENEWSLIST;

@@ -38,7 +38,7 @@ public class NewsItemDAO {
 				DBOpenHelper.DATABASE_VERSION);
 	}
 
-	public int addNewsToLocalDB(JSONObject jsonObject) {
+	public List<NewsItem> addNewsToLocalDB(JSONObject jsonObject) {
 		List<NewsItem> listNews = new ArrayList<NewsItem>();
 		try {
 			JSONObject responseData = jsonObject.getJSONObject("responseData");
@@ -78,15 +78,17 @@ public class NewsItemDAO {
 		return addNewsToLocalDB(listNews);
 	}
 
-	public int addNewsToLocalDB(List<NewsItem> listNews) {
-		int count = 0;
-		for (int i = 0; i < listNews.size(); i++) {
+	public List<NewsItem> addNewsToLocalDB(List<NewsItem> listNews) {
+		int size = listNews.size();
+		for (int i = size - 1; i >= 0; i--) {
 			if (!isExistInLocalDB(listNews.get(i).getLink())) {
 				addNewItemToLocalDB(listNews.get(i));
-				count++;
+			} else {
+				listNews.remove(i);
 			}
 		}
-		return count;
+
+		return listNews;
 	}
 
 	public void addNewItemToLocalDB(NewsItem newsItem) {

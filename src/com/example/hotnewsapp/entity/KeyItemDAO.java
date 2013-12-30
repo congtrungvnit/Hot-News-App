@@ -81,7 +81,7 @@ public class KeyItemDAO {
 		return result;
 	}
 
-	/*public ArrayList<HashMap<String, String>> checkKey(List<NewsItem> listNews) {
+	public ArrayList<HashMap<String, String>> checkKey(List<NewsItem> listNews) {
 		ArrayList<HashMap<String, String>> DATA = new ArrayList<HashMap<String, String>>();
 		List<KeyItem> listKey = getAllData();
 		for (int i = 0; i < listKey.size(); i++) {
@@ -94,8 +94,12 @@ public class KeyItemDAO {
 					countKey++;
 				}
 			}
-
+			if (countKey > 0) {
+				searchItem.put("key", key);
+				searchItem.put("count", String.valueOf(countKey));
+				DATA.add(searchItem);
+			}
 		}
 		return DATA;
-	}*/
+	}
 }
